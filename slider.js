@@ -1,3 +1,7 @@
-// 画像の要素を取得する
-let sliderItems = document.querySelectorAll(".slider-item");
-console.log(sliderItems);
+import Item from "/item.js";
+
+class Slider{
+
+}
+
+export default Slider;
