@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- css, bootstrap読み込み -->
+    <!-- css, bootstrap, js読み込み -->
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <script type="text/javascript" src="slider.js"></script>
+    <script type="text/javascript" src="main.js"></script>
     <title>Vending Machine</title>
 </head>
 <body class="first-color">
@@ -17,8 +17,8 @@
 
     <main class="second-color p-4">
         <!-- sliderBox -->
-        <section class="row justify-content-center">
-            <div class="col-md-7 col-11 third-color m-2 rounded">
+        <section id="slider-wrap" class="row justify-content-center">
+            <div class="col-md-7 col-11 third-color m-2 rounded slider-data">
                 <div class="py-4 slider-item">
                     <img class="d-block mx-auto rounded" src="images/heart1.png" alt="Latte art heart1">
                 </div>
