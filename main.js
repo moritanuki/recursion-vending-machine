@@ -4,6 +4,17 @@ class Item{
         this.name = name;
         this.price = price;
     }
+
+    // Itemクラスのインスタンスリスト生成
+    static generateItems(hashmap){
+        let items = [];
+        let keys = Object.keys(hashmap);
+        for(let i = 0; i < keys.length; i++){
+            let item = new Item(i, keys[i], hashmap[keys[i]]);
+            items.push(item);
+        }
+        return items;
+    }
 }
 
 class Slider{
@@ -13,10 +24,18 @@ class Slider{
         this.sliderShow = sliderShow;
         this.main = main;
         this.extra = extra;
-        this.sliderItems = this.createSliderItems(items);
+        this.sliderItems = this.createSliderElement(items);
     }
 
-    createSliderItems(items){
+    // スライダーのWrapperElementにクラス追加
+    addClass(){
+        this.sliderShow.classList.add("d-flex", "flex-nowrap", "overflow-hidden");
+        this.main.classList.add("w-100");
+        this.extra.classList.add("w-100");
+    }
+
+    // スライダーの画像部分作成
+    createSliderElement(items){
         let itemsElement = [];
         for(let i = 0; i < items.length; i++){
 
@@ -34,14 +53,14 @@ class Slider{
         return itemsElement;
     }
 
-    appendElement(){
-        this.sliderShow.classList.add("d-flex", "flex-nowrap", "overflow-hidden");
-        this.main.classList.add("w-100");
-        this.extra.classList.add("w-100");
-
-        this.main.append(this.sliderItems[0]);
-        this.sliderShow.append(this.main);
-        Slider.box.append(this.sliderShow);
+    // スライダーのボタン作成
+    createButtonElement(){
+        for(let i = 1; i <= this.sliderItems.length; i++){
+            let button = document.createElement("button");
+            button.classList.add("btn", "btn-outline-light", "col-3", "m-1");
+            button.innerHTML = i;
+            document.getElementById("btn-data").append(button);
+        }
     }
 
     slideJump(){
@@ -55,18 +74,32 @@ class Slider{
 
 class Show{
 
-    static startSlider(items){
+    static startSlider(lattes){
+        // Sliderクラスのインスタンス生成
         let slider = new Slider(
             document.createElement("div"),
             document.createElement("div"),
             document.createElement("div"),
-            items
+            Item.generateItems(lattes)
         );
 
-        slider.appendElement();
+        Show.appendElement(slider);
+    }
+
+    // スライダー要素を追加し、表示する
+    static appendElement(slider){
+        slider.addClass();
+
+        slider.main.append(slider.sliderItems[0]);
+        slider.sliderShow.append(slider.main);
+        Slider.box.append(slider.sliderShow);
+
+        slider.createButtonElement();
     }
 }
 
+
+// 画像の名前と値段
 const lattes = {
     "heart1": 4.10,
     "heart2": 4.10,
@@ -79,11 +112,5 @@ const lattes = {
     "swan": 4.30,
 };
 
-let items = [];
-let latteKeys = Object.keys(lattes);
-for(let i = 0; i < latteKeys.length; i++){
-    let item = new Item(i, latteKeys[i], lattes[latteKeys[i]]);
-    items.push(item);
-}
-
-Show.startSlider(items);
+// ここから実行
+Show.startSlider(lattes);
