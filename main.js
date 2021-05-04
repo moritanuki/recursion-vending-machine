@@ -18,8 +18,11 @@ class Item{
 }
 
 class Slider{
-    // スライダー用のWrapperElement
-    static box = document.getElementById("slider-box");
+    // 各WrapperElement
+    static sliderBox = document.getElementById("slider-box");
+    static selectedBox = document.getElementById("selected-box");
+    static selectBtn = document.getElementById("select-btn");
+    static submitBtn = document.getElementById("submit-btn");
 
     constructor(sliderShow, main, extra, items){
         this.sliderShow = sliderShow;
@@ -29,7 +32,7 @@ class Slider{
         this.sliderItems = this.createSliderElement(items);
     }
 
-    // スライダーのWrapperElementにクラス追加
+    // スライダーのElementにクラス追加
     addClass(){
         this.sliderShow.classList.add("d-flex", "flex-nowrap", "overflow-hidden");
         this.main.classList.add("w-100");
@@ -55,18 +58,71 @@ class Slider{
         return itemsElement;
     }
 
-    slideJump(){
-        
+    // 選択された商品部分作成
+    createSelectedElement(){
+        let div1 = document.createElement("div");
+        let div2 = document.createElement("div");
+        div1.classList.add("col-3");
+        div2.classList.add("col-3");
+
+        let h2 = document.createElement("h2");
+        let h4 = document.createElement("h4");
+        let p = document.createElement("p");
+        h2.classList.add("rounded", "py-4", "bg-dark");
+
+        // 初期値設定
+        h2.innerHTML = 1;
+        h4.innerHTML = this.items[0].price;
+        p.innerHTML = this.items[0].name.toUpperCase();
+
+        div1.append(h2);
+        div2.append(p, h4);
+        Slider.selectedBox.append(div1, div2);
     }
 
-    animationMain(currentItem, nextItem){
-
+    // スライダーのボタン作成
+    createButtonElement(){
+        for(let i = 1; i <= this.sliderItems.length; i++){
+            let button = document.createElement("button");
+            button.classList.add("btn", "btn-outline-light", "col-3", "m-1");
+            button.innerHTML = i;
+            document.getElementById("select-btn").append(button);
+        }
     }
-}
 
-class Selected{
-    // 選択された商品を表示するWrapperElement
-    static box = document.getElementById("selected-box");
+    slideJump(start, end){
+        let currentItem = this.sliderItems[start-1];
+        let nextItem = this.sliderItems[end-1];
+
+        let point = Math.ceil(this.sliderItems.length / 2);
+        let distance = Math.abs(end - start);
+
+        let animationType = distance <= point ? "right" : "left";
+
+        this.animationMain(currentItem, nextItem, animationType);
+    }
+
+    animationMain(currentItem, nextItem, animationType){
+        this.main.innerHTML = "";
+        this.main.append(nextItem);
+
+        this.extra.innerHTML = "";
+        this.extra.append(currentItem);
+
+        this.main.classList.add("expand-animation");
+        this.extra.classList.add("deplete-animation");
+
+        if(animationType === "right"){
+            this.sliderShow.innerHTML = "";
+            this.sliderShow.append(this.extra);
+            this.sliderShow.append(this.main);
+        }
+        else if(animationType === "left"){
+            this.sliderShow.innerHTML = "";
+            this.sliderShow.append(this.main);
+            this.sliderShow.append(this.extra);
+        }
+    }
 }
 
 class Show{
@@ -91,33 +147,29 @@ class Show{
         // スライダー画像の初期値設定
         slider.main.append(slider.sliderItems[0]);
         slider.sliderShow.append(slider.main);
-        Slider.box.append(slider.sliderShow);
+        Slider.sliderBox.append(slider.sliderShow);
 
+        // 選択商品追加
+        slider.createSelectedElement();
         // ボタンを追加
-        Show.createButtonElement(slider);
-    }
-
-    // スライダーのボタン作成
-    static createButtonElement(slider){
-        for(let i = 1; i <= slider.sliderItems.length; i++){
-            let button = document.createElement("button");
-            button.classList.add("btn", "btn-outline-light", "col-3", "m-1");
-            button.innerHTML = i;
-            document.getElementById("btn-data").append(button);
-        }
+        slider.createButtonElement();
     }
 
     // スライダー用ボタンにeventListner設定
     static addEventListner(slider){
-        const buttons = document.querySelectorAll("#btn-data button");
-        const box = document.getElementById("selected-box");
+        const buttons = document.querySelectorAll("#select-btn button");
+
         for(let i = 0; i < buttons.length; i++){
             buttons[i].addEventListener("click", function(){
-                const num = buttons[i].innerHTML;
+                let currentNum = parseInt(Slider.selectedBox.getElementsByTagName("h2")[0].innerHTML);
+                let nextNum = parseInt(buttons[i].innerHTML);
                 // 選択された商品を表示
-                box.getElementsByTagName("h2")[0].innerHTML = num;
-                box.getElementsByTagName("p")[0].innerHTML = slider.items[i].name.toUpperCase();
-                box.getElementsByTagName("h4")[0].innerHTML = `$${slider.items[i].price}`;
+                Slider.selectedBox.getElementsByTagName("h2")[0].innerHTML = nextNum;
+                Slider.selectedBox.getElementsByTagName("p")[0].innerHTML = slider.items[i].name.toUpperCase();
+                Slider.selectedBox.getElementsByTagName("h4")[0].innerHTML = `$${slider.items[i].price}`;
+
+                // スライダー実行
+                slider.slideJump(currentNum, nextNum);
             });
         }
     }
