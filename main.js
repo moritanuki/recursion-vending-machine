@@ -35,8 +35,7 @@ class Slider{
     // スライダーのElementにクラス追加
     addClass(){
         this.sliderShow.classList.add("d-flex", "flex-nowrap", "overflow-hidden");
-        this.main.classList.add("w-100");
-        this.extra.classList.add("w-100");
+        this.main.classList.add("mx-auto");
     }
 
     // スライダーの画像部分作成
@@ -95,9 +94,11 @@ class Slider{
         let nextItem = this.sliderItems[end-1];
 
         let point = Math.ceil(this.sliderItems.length / 2);
-        let distance = Math.abs(end - start);
+        let distance = end - start;
+        console.log(point);
+        console.log(distance);
 
-        let animationType = distance <= point ? "right" : "left";
+        let animationType = distance >= 0 && Math.abs(distance) <= point ? "right" : "left";
 
         this.animationMain(currentItem, nextItem, animationType);
     }
@@ -138,6 +139,7 @@ class Show{
 
         Show.appendElement(slider);
         Show.addEventListner(slider);
+        Show.addEventListenerForSubmit(slider);
     }
 
     // スライダー要素を追加し、表示する
@@ -155,7 +157,7 @@ class Show{
         slider.createButtonElement();
     }
 
-    // スライダー用ボタンにeventListner設定
+    // スライダー用ボタンにevent設定
     static addEventListner(slider){
         const buttons = document.querySelectorAll("#select-btn button");
 
@@ -172,6 +174,18 @@ class Show{
                 slider.slideJump(currentNum, nextNum);
             });
         }
+    }
+
+    // submitボタンにevent設定
+    static addEventListenerForSubmit(){
+        Slider.submitBtn.addEventListener("click", function(){
+            alert(
+                `
+                【${Slider.selectedBox.getElementsByTagName("p")[0].innerHTML}】を購入しました。
+                只今、ラテアート作成中です。しばらくお待ちください。
+                `
+                );
+        });
     }
 }
 
