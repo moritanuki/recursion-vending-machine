@@ -96,8 +96,6 @@ class Slider{
     
             let point = Math.ceil(this.sliderItems.length / 2);
             let distance = end - start;
-            console.log(point);
-            console.log(distance);
     
             let animationType = distance >= 0 && Math.abs(distance) <= point ? "right" : "left";
     
