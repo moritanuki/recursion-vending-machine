@@ -99,7 +99,7 @@ class Slider{
             let distance = end - start;
     
             let animationType = "left";
-            if( distance <= point || 
+            if( distance >= 0 && distance <= point || 
                 distance < 0 && Math.abs(distance) > point){
                     animationType = "right";
             }
