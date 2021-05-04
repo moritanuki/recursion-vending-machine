@@ -90,17 +90,19 @@ class Slider{
     }
 
     slideJump(start, end){
-        let currentItem = this.sliderItems[start-1];
-        let nextItem = this.sliderItems[end-1];
-
-        let point = Math.ceil(this.sliderItems.length / 2);
-        let distance = end - start;
-        console.log(point);
-        console.log(distance);
-
-        let animationType = distance >= 0 && Math.abs(distance) <= point ? "right" : "left";
-
-        this.animationMain(currentItem, nextItem, animationType);
+        if(start != end){
+            let currentItem = this.sliderItems[start-1];
+            let nextItem = this.sliderItems[end-1];
+    
+            let point = Math.ceil(this.sliderItems.length / 2);
+            let distance = end - start;
+            console.log(point);
+            console.log(distance);
+    
+            let animationType = distance >= 0 && Math.abs(distance) <= point ? "right" : "left";
+    
+            this.animationMain(currentItem, nextItem, animationType);
+        }
     }
 
     animationMain(currentItem, nextItem, animationType){
