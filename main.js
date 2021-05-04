@@ -89,20 +89,26 @@ class Slider{
         }
     }
 
+    // 選択したボタンによって動きを変える
     slideJump(start, end){
         if(start != end){
             let currentItem = this.sliderItems[start-1];
             let nextItem = this.sliderItems[end-1];
     
-            let point = Math.ceil(this.sliderItems.length / 2);
+            let point = Math.floor(this.sliderItems.length / 2);
             let distance = end - start;
     
-            let animationType = distance >= 0 && Math.abs(distance) <= point ? "right" : "left";
+            let animationType = "left";
+            if( distance <= point || 
+                distance < 0 && Math.abs(distance) > point){
+                    animationType = "right";
+            }
     
             this.animationMain(currentItem, nextItem, animationType);
         }
     }
 
+    // スライダーアニメーション
     animationMain(currentItem, nextItem, animationType){
         this.main.innerHTML = "";
         this.main.append(nextItem);
