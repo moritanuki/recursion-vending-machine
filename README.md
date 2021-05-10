@@ -3,7 +3,7 @@ Recursion Project2 -Vending Machine-
 
 ## Description
  
-Computer Science学習プラットフォーム *Recursion* でのプロジェクト。
+Computer Science学習プラットフォーム [*Recursion*](https://recursionist.io/) でのプロジェクト。
 画像枚数によって要素を動的に作成する自動販売機。
  
 ***DEMO:***
@@ -21,7 +21,7 @@ Computer Science学習プラットフォーム *Recursion* でのプロジェク
  
 ## Usage
  
-1. index.htmlをブラウザ上で実行する
+1. [Vending Machine](https://moritanuki.github.io/recursion-vending-machine/)にアクセス
  
 ## Installation
  
